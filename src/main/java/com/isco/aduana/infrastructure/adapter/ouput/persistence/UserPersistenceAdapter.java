@@ -7,6 +7,8 @@ import com.isco.aduana.infrastructure.adapter.ouput.persistence.repository.UserR
 import com.isco.aduana.infrastructure.adapter.ouput.persistence.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 public class UserPersistenceAdapter implements UserOutputPort
 {
     private final UserRepository userRepository;
@@ -28,5 +30,20 @@ public class UserPersistenceAdapter implements UserOutputPort
         System.out.println("Despues del save userEntity = " + userEntity);
 
         return userMapper.toUser(saveUser);
+    }
+
+    @Override
+    public Optional<User> getUserById(Long id)
+    {
+        Optional<UserEntity> userFind = userRepository.getUserEntityById(id);
+
+        if (userFind.isEmpty())
+        {
+            return Optional.empty();
+        }
+
+        User user = userMapper.toUser(userFind.get());
+
+        return Optional.of(user);
     }
 }

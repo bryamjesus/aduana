@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.isco.aduana.domain.service.UserService;
+import com.isco.aduana.domain.service.UserServiceUse;
 import com.isco.aduana.infrastructure.adapter.ouput.persistence.UserPersistenceAdapter;
 import com.isco.aduana.infrastructure.adapter.ouput.persistence.mapper.UserMapper;
 import com.isco.aduana.infrastructure.adapter.ouput.persistence.repository.UserRepository;
@@ -32,9 +32,9 @@ public class BeanConfiguration
     }
 
     @Bean
-    public UserService userService(
+    public UserServiceUse userService(
             UserPersistenceAdapter userPersistenceAdapter)
     {
-        return new UserService(userPersistenceAdapter);
+        return new UserServiceUse(userPersistenceAdapter);
     }
 }

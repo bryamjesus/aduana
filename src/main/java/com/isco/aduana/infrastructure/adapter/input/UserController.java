@@ -1,29 +1,28 @@
 package com.isco.aduana.infrastructure.adapter.input;
 
-import com.isco.aduana.application.ports.input.CreateUserUserCase;
+import com.isco.aduana.application.ports.input.CreateUserUseCase;
+import com.isco.aduana.application.ports.input.GetUserUseCase;
 import com.isco.aduana.domain.model.User;
 import com.isco.aduana.infrastructure.adapter.input.rest.data.request.UserRequest;
 import com.isco.aduana.infrastructure.adapter.input.rest.data.response.UserResponse;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController
 {
-    private final CreateUserUserCase createUserUserCase;
+    private final CreateUserUseCase createUserUseCase;
+    private final GetUserUseCase getUserUseCase;
     private final ModelMapper mapper;
 
-    public UserController(CreateUserUserCase createUserUserCase,
-            ModelMapper mapper)
+    public UserController(CreateUserUseCase createUserUseCase,
+            GetUserUseCase getUserUseCase, ModelMapper mapper)
     {
-        this.createUserUserCase = createUserUserCase;
+        this.createUserUseCase = createUserUseCase;
+        this.getUserUseCase = getUserUseCase;
         this.mapper = mapper;
     }
 
@@ -34,10 +33,18 @@ public class UserController
         System.out.println(
                 "userRequest.getFirstName() = " + userRequest.getFirstName());
         User userSave = mapper.map(userRequest, User.class);
-        userSave = createUserUserCase.createUser(userSave);
+        userSave = createUserUseCase.createUser(userSave);
 
         return new ResponseEntity<>(mapper.map(userSave, UserResponse.class),
                 HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id)
+    {
+        User userFind = getUserUseCase.getUserById(id);
+        return new ResponseEntity<>(mapper.map(userFind, UserResponse.class),
+                HttpStatus.ACCEPTED);
     }
 
 }
