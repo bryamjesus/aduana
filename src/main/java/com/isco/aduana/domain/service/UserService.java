@@ -4,14 +4,13 @@ import com.isco.aduana.application.ports.input.CreateUserUseCase;
 import com.isco.aduana.application.ports.input.GetUserUseCase;
 import com.isco.aduana.application.ports.output.UserOutputPort;
 import com.isco.aduana.domain.model.User;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 
 // @AllArgsConstructor
-public class UserServiceUse implements CreateUserUseCase, GetUserUseCase
+public class UserService implements CreateUserUseCase, GetUserUseCase
 {
     private final UserOutputPort userOutputPort;
 
-    public UserServiceUse(UserOutputPort userOutputPort)
+    public UserService(UserOutputPort userOutputPort)
     {
         this.userOutputPort = userOutputPort;
     }
