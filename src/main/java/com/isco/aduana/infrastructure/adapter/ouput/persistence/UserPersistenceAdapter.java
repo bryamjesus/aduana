@@ -46,4 +46,24 @@ public class UserPersistenceAdapter implements UserOutputPort
 
         return Optional.of(user);
     }
+
+    private Boolean existUser(Long id)
+    {
+        Optional<UserEntity> userFind = userRepository.getUserEntityById(id);
+        return userFind.isPresent();
+    }
+
+    @Override
+    public Optional<User> updateUserById(User user)
+    {
+        if (!existUser(user.getId()))
+        {
+            return Optional.empty();
+        }
+        UserEntity a = userMapper.toEntity(user);
+
+        UserEntity userUpdateEntity = userRepository.save(a);
+        User userUpdate = userMapper.toUser(userUpdateEntity);
+        return Optional.of(userUpdate);
+    }
 }

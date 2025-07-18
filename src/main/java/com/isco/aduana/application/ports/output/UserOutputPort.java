@@ -9,4 +9,6 @@ public interface UserOutputPort
     User saveUser(User user);
 
     Optional<User> getUserById(Long id);
+
+    Optional<User> updateUserById(User user);
 }
